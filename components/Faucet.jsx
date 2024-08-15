@@ -19,7 +19,6 @@ function Faucet() {
     }
 
     try {
-      // Menghubungkan dengan Ethereum provider
       if (!window.ethereum) {
         toast.error("Ethereum provider not found. Please install MetaMask.");
         return;
@@ -28,14 +27,11 @@ function Faucet() {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
-      // Menghubungkan dengan smart contract
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-      // Mengirimkan token
       const tx = await contract.requestTokens();
       setTransactionStatus("Transaction sent! Waiting for confirmation...");
 
-      // Menunggu transaksi selesai
       await tx.wait();
 
       toast.success("Transaction confirmed!");
